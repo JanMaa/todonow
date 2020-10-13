@@ -1,0 +1,26 @@
+  {%load static%}
+    <!--Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark teal darken-4">
+    <a href="" class="navbar-brand display-4">
+        <img class="mr-1" id="todo-brand" src="{% static 'img/todo.png' %}">
+      </a>
+    {% if request.user.is_authenticated %}
+      <ul class="navbar-nav ml-auto nav-flex-icons" id="userBtn">
+          <li class="nav-item dropdown d-flex align-items-center" onclick="openNav()">
+            <a><span  style="color: #e0f2f1; font-size: 18px;" class="color-primary mr-1">{{request.user}}</span>
+              {% if "default-avatar.png" in request.user.profile.profile_pic.url %}
+                <div class="p-0 m-0 d-inline-block" id="profileDefault"></div>
+              {% else %}
+                <div class="p-0 m-0 d-inline-block" id="navAvatar"></div>
+              {% endif %}
+              <i class="fas fa-caret-down ml-1" style="color: #e0f2f1;"></i>
+              <!-- <img src="{% static 'img/default-avatar.png' %}" class="rounded-circle z-depth-0"
+              alt="avatar image" height="35"> -->
+            </a>
+            </div>
+          </li>
+        </ul>
+    {% endif %}
+  </nav>
+  <!--/.Navbar -->
+

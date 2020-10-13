@@ -1,0 +1,47 @@
+html, body{
+	height: 100%;
+}
+
+h1,h2,h3,h4,h5,h6,span,input,label,p,a{
+	font-family: 'Questrial', sans-serif;
+}
+
+#todo-brand {
+  height: 35px;
+}
+
+#profileDefault {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background: #e0f2f1;
+  font-size: 25px;
+  color: #004d40;
+  text-align: center;
+  margin: 0;
+  line-height: 1.4;
+}
+
+#navAvatar {
+  width: 35px;
+  height: 35px;
+  margin: 0;
+
+/* fill the container, preserving aspect ratio, and cropping to fit */
+  background-size: cover;
+
+  /* center the image vertically and horizontally */
+  background-position: top center;
+
+  /* round the edges to a circle with border radius 1/2 container size */
+  border-radius: 50%;
+}
+
+@media (max-width: 768px) {
+  
+  #todo-brand {
+    height: 30px;
+  }
+
+}
+

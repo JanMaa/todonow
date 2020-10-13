@@ -1,0 +1,68 @@
+<!doctype html>
+
+{% load static %}
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <title>To Do</title>
+  <meta name="description" content="To Do">
+  <meta name="author" content="To Do App">
+
+    <!-- Font Awesome -->
+  <link rel="shortcut icon" href="{%  static 'img/favicon.png' %}">
+
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous">
+
+    <!-- Google Fonts Roboto -->
+  <link href="https://fonts.googleapis.com/css2?family=Questrial&family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap core CSS -->
+
+  <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+  <!-- Material Design Bootstrap -->
+  <link rel="stylesheet" type="text/css" href="{% static 'css/mdb.min.css' %}">
+  <!-- Your custom styles (optional) -->
+  <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+
+  {% block style %}
+
+  {% endblock style %}
+
+</head>
+
+<body>
+  {%  include 'todofront/sidenav.html' %}
+  <div id="body_container">
+    {%  include 'todofront/navbar.html' %}
+    
+    {% block content %}
+      
+
+    {% endblock content %}
+  </div>
+  
+  <!-- SCRIPTS -->
+  <!-- JQuery -->
+  <script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+  <!-- Bootstrap tooltips -->
+  <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript" src="{% static 'js/mdb.min.js' %}"></script>
+
+    <!-- Custom scripts -->
+  <script type="text/javascript" src="{% static 'js/sidenav.js' %}">
+  </script>
+
+  {% block scripts%}
+
+  {% endblock scripts%}
+
+
+</body>
+</html>
+

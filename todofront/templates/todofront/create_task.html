@@ -1,0 +1,314 @@
+{% extends 'todofront/main.html' %}
+{% load static %}
+{% block style %}
+	<link rel="stylesheet" href="{% static 'css/create_task.css' %}">
+{% endblock style %}
+
+{% block content %}
+<div id="inner">
+  <div class="container-fluid">
+		<div class="row gy-6">
+		  	<div class="card col-12 col-md-10 col-lg-6 z-depth-5" id="card_create">
+		  		<div class="card-body">
+				    <div class="row">
+						<div class="col-12 col-md-10 col-lg-8 mb-3 mx-auto" id="form-wrapper">
+							<form id="form">
+								<div class="md-form mb-2">
+									<input type="text" class="form-control" id="title">
+									<label for="title" >Create task</label>
+								</div>
+								<div class="text-center">
+									<button type="submit" class="btn btn-sm btn-default rounded-pill" id="submit-button">Add Task</button>
+								</div>
+							</form>
+						</div>
+						<div class="col-md-12" id="task-container">
+
+						</div>
+						<div class="update-div">
+							{% include 'todofront/update_modal.html' %}
+						</div>
+						<div class="del-div">
+							{% include 'todofront/delete_modal.html' %}
+						</div>
+					</div>
+				</div>
+		    </div>
+		</div>
+  </div>
+</div>	
+
+{% endblock content %}
+
+{% block scripts %}
+  <script type="text/javascript">
+
+    // AVATAR / PROFILE PIC
+
+    $(document).ready(function(){
+      var username = "{{request.user}}";
+
+      var initial = username.charAt(0).toUpperCase();
+
+      var navAvatar = document.getElementById('navAvatar');
+      var sideNavAvatar = document.getElementById('sideNavAvatar');
+
+      if ("{{request.user.profile.profile_pic.url}}" !== "") {
+
+        if ("{{request.user.profile.profile_pic.url}}".includes("default-avatar.png")) {
+          $('#profileDefault').text(initial);
+          $('#sideNavAvatarDefault').text(initial);
+        }
+        else {
+          navAvatar.style.backgroundImage = "url({{request.user.profile.profile_pic.url}})";
+          sideNavAvatar.style.backgroundImage = "url('{{request.user.profile.profile_pic.url}}')";
+        }
+      }
+    }
+  );
+
+    // FILE UPLOAD INPUT / NAME
+
+    var inputs = document.querySelectorAll( '.inputfile' );
+    Array.prototype.forEach.call( inputs, function( input )
+    {
+      var label  = input.nextElementSibling,
+        labelVal = label.innerHTML;
+
+      input.addEventListener('change', function( e )
+      {
+        var fileName = '';
+
+        if( this.files && this.files.length > 1 ) {
+          fileName = ( this.getAttribute( 'data-multiple-caption' ) || '' ).replace( '{count}', this.files.length );
+        }
+        else {
+          fileName = e.target.value.split( '\\' ).pop();
+        }
+
+        if( fileName ) {
+          label.querySelector('span').innerHTML = fileName;
+        }
+        else {
+          label.innerHTML = labelVal;
+        }
+
+      });
+    });
+
+
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+          const cookies = document.cookie.split(';');
+          for (let i = 0; i < cookies.length; i++) {
+              const cookie = cookies[i].trim();
+              // Does this cookie string begin with the name we want?
+              if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+              }
+          }
+      }
+      return cookieValue;
+  }
+  var csrftoken = getCookie('csrftoken');
+  var activeItem = null
+  var list_snapshot = []
+
+    taskList()
+
+    function taskList(){
+      var task_container = document.getElementById('task-container')
+      var url = 'api/task-list/'
+
+      fetch(url)
+      .then((resp) => resp.json())
+      .then(function(data){
+
+        var list_data = data
+        for (var i in list_data){
+
+          try{
+            document.getElementById(`data-row-${i}`).remove()
+          }catch(err){
+
+          }
+
+          var title = `<span>${list_data[i].title}</span>`
+
+          if (list_data[i].complete == true){
+            title = `<strike class="text-muted">${list_data[i].title}</strike>`
+          }
+
+          var item = `
+            <div id="data-row-${i}" class="row d-flex task-wrapper mb-2">
+              <div class="col-auto p-0">
+              <button class="btn btn-sm btn-info px-2 py-1 mr-0 update-button data-val="${list_data[i].title}" data-toggle="modal" data-target="#updateModal">
+                <i class="fas fa-edit"></i>
+              </button>
+              </div>
+              <div class="col-auto p-0">
+              <button class="btn btn-sm btn-danger px-2 py-1 mr-0 delete-button data-val="${list_data[i].title}" data-toggle="modal" data-target="#deleteModal"">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+              </div>
+              <div class="col-auto pt-1 px-1 flex-fill title">
+              ${title}
+              </div>
+            </div>
+          `
+          task_container.insertAdjacentHTML('beforeend', item) // Inside the element, insert after its last child.
+        }
+          if (list_snapshot.length > list_data.length){
+            for (var i = list_data.length; i < list_snapshot.length; i++){
+              document.getElementById(`data-row-${i}`).remove()
+            }
+          }
+
+          list_snapshot = list_data
+
+          for (var i in list_data){
+
+            var editBtn = document.getElementsByClassName('update-button')[i];
+
+            var deleteBtn = document.getElementsByClassName('delete-button')[i];
+
+            var titleBtn = document.getElementsByClassName('title')[i];
+
+            editBtn.addEventListener('click', (function(item) {
+                return function(){
+                  editItem(item)
+                }
+            })(list_data[i]))
+
+            deleteBtn.addEventListener('click', (function(item) {
+                return function(){
+                  deleteItem(item)
+                }
+            })(list_data[i]))
+
+            titleBtn.addEventListener('click', (function(item) {
+                return function(){
+                  strikeTask(item)
+                }
+            })(list_data[i]))
+
+        }
+        var task_total = document.getElementById('task-total')
+        var finished = document.getElementById('finished')
+        var unfinished = document.getElementById('unfinished')
+
+        task_total.innerHTML = list_snapshot.length
+
+        var finished_total = list_snapshot.filter(data => data.complete == true); 
+        finished.innerHTML = finished_total.length
+
+        var unfinished_total = list_snapshot.filter(data => data.complete == false); 
+        unfinished.innerHTML = unfinished_total.length
+      })
+    }
+
+  	var form = document.getElementById('form-wrapper')
+    form.addEventListener('submit', function(e){
+      e.preventDefault()
+      var url = 'api/task-create/'
+
+      if (activeItem != null){
+        var url = `api/task-update/${activeItem.id}/`
+        activeItem = null
+      }
+
+      var title = document.getElementById('title').value
+      fetch(url, {
+        method:'POST',
+        headers:{
+          'Content-type':'application/json',
+          'X-CSRFToken':csrftoken,
+        },
+        body:JSON.stringify({'title':title})
+      }).then(function(response){
+        taskList()
+        $('#form').trigger("reset");
+      })
+      })
+
+    var modal_form = document.getElementById('update-modal-form')
+    
+    modal_form.addEventListener('submit', function(e){
+      e.preventDefault()
+
+      var url = `api/task-update/${activeItem.id}/`
+
+      var title = document.getElementById('modal-input').value
+
+      fetch(url, {
+        method:'POST',
+        headers:{
+          'Content-type':'application/json',
+          'X-CSRFToken':csrftoken,
+        },
+        body:JSON.stringify({'title':title})
+      }).then(function(response){
+        taskList();
+        $("#cancel-btn").click();
+        $('.modal-backdrop').remove();
+        
+      })
+      })
+
+    var del_form = document.getElementById('del-modal-form')
+    del_form.addEventListener('submit', function(e){
+      e.preventDefault()
+        fetch(`api/task-delete/${activeItem.id}/`, {
+          method:'DELETE',
+          headers:{
+            'Content-type':'application/json',
+            'X-CSRFToken':csrftoken,
+          }
+        }).then((response) => {
+          taskList();
+          $("#del-cancel").click();
+        $('.modal-backdrop').remove();
+        })
+      })
+
+    var modal_input = document.getElementById('modal-input')
+
+    function editItem(item){
+        activeItem = item
+        modal_input.value = item.title
+    }
+
+    $("#updateModal").on('hidden.bs.modal', function(){
+        activeItem = null
+    });
+
+    $("#deleteModal").on('hidden.bs.modal', function(){
+        activeItem = null
+    });
+
+    var del_title = document.getElementById('del-title')
+
+      function deleteItem(item){
+        activeItem = item
+        del_title.innerHTML = item.title
+      }
+
+    function strikeTask(item){
+
+      item.complete = !item.complete
+      fetch(`api/task-update/${item.id}/`, {
+        method:'POST',
+        headers:{
+          'Content-type':'application/json',
+          'X-CSRFToken':csrftoken,
+        },
+        body:JSON.stringify({'title':item.title, 'complete':item.complete})
+      }).then((response) => {
+        taskList()
+      })
+    }
+
+  </script>
+{% endblock scripts%}

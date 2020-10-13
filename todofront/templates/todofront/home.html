@@ -1,0 +1,221 @@
+{% extends 'todofront/main.html' %}
+{% load static%}
+{% block style %}
+	<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock style %}
+{% block content %}
+<div class="container">
+	<div class="row d-flex align-items-center justify-content-center mt-5 mt-lg-0">
+	  	<div class="col-5 col-lg-3">
+	  		<img src="{% static 'img/img-1.png' %}" class="img-fluid">
+	  	</div>
+	  	<div class="col-6 col-lg-6">
+	  		<div class="card p-2 d-flex align-items-center justify-content-center" id="slogan">
+	  			<h1 class="h1-responsive">What would you like to do?</h1>
+	  		</div>
+	  	</div>
+	</div>
+	<div class="row d-flex justify-content-end mx-4 mt-5 mt-lg-0 pt-5 pt-lg-0">
+	  	<div class="col-7 col-lg-4 mt-3">
+	  		<a class="btn btn-md btn-default w-100 rounded-pill" id="loginBtn"><span class="h4-responsive">Log in</span></a>
+	  	</div>
+	  	<div class="col-5 col-lg-3">
+	  		<img src="{% static 'img/img-3.png' %}" class="img-fluid">
+	  	</div>
+	</div>
+	<div class="row d-flex justify-content-start mx-4 pb-lg-5 mt-3 mt-lg-0">
+	  	<div class="col-5 col-lg-3">
+	  		<img src="{% static 'img/img-2.png' %}" class="img-fluid">
+	  	</div>
+	  	<div class="col-7 col-lg-4 mt-3">
+	  		<a class="btn btn-md btn-default w-100 mt-3 rounded-pill" id="registerBtn"><span class="h4-responsive">Register</span></a>
+	  	</div>
+	</div>
+
+	<!-- Log in and Register Modal -->
+
+	<div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header text-center d-flex justify-content-center p-0 rounded-top">
+	      	<div class="container-fluid m-0 p-0">
+	        <ul class="nav nav-tabs row no-gutters p-0 m-0" id="myTab" role="tablist">
+			  <li class="col-6 nav-item">
+			    <a class="nav-link border border-0 rounded-0 py-3" id="login-tab" data-toggle="tab" href="#login-panel" role="tab" aria-controls="home"
+			      aria-selected="true">LOG IN</a>
+			  </li>
+			  <li class="col-6 nav-item">
+			    <a class="nav-link border border-0 rounded-0 py-3" id="register-tab" data-toggle="tab" href="#register-panel" role="tab" aria-controls="profile"
+			      aria-selected="false">REGISTER</a>
+			  </li>
+			</ul>
+			</div>
+	      </div>
+	      
+	      <div class="tab-content bg-unique" id="myTabContent">
+
+	      	<!-- LOG IN PANEL -->
+			  <div class="tab-pane fade" id="login-panel" role="tabpanel" aria-labelledby="home-tab">
+	      		<form method="POST" action="">
+	      		  {% csrf_token %}
+	      		  <div class="modal-body mx-3">
+				  	<div class="md-form mb-5">
+			          <i class="fas fa-user prefix text-white"></i>
+			          <!-- <input name="login-username" type="text" id="login-username" class="form-control validate text-white font-weight-bold pl-1"> -->
+			          {{login_form.username}}
+			          <label class="text-white" data-error="wrong" data-success="right" for="login-username">Username</label>
+			        </div>
+			        <div class="md-form mb-5">
+              		  <i class="fas fa-lock prefix text-white"></i>
+			          <!-- <input name="login-password" type="password" id="login-password" class="form-control validate text-white font-weight-bold pl-1"> -->
+			          {{login_form.password}}
+			          <label class="text-white" data-error="wrong" data-success="right" for="login-password">Password</label>
+			        </div>
+			      </div>
+			      <div class="modal-footer d-flex justify-content-center">
+			    	<button name="login_submit" type="submit" class="btn btn-outline-white rounded-pill w-50 modal-submit-btn">Login</button>
+			    	    {% for message in messages %}
+			    	    	{% if message.tags == "error" %}
+
+			                    <div class="alert alert-danger alert-dismissible fade show mt-5 mb-2">
+			                        <a class="close" href="#" data-dismiss="alert">×</a>
+
+			                        <span id="error-msg">{{message}}</span>
+
+			                    </div>
+
+				    		{% elif message.tags == "success" %}
+			                    <div class="alert alert-success alert-dismissible fade show mt-5 mb-2">
+			                        <a class="close" href="#" data-dismiss="alert">×</a>
+
+			                        <span id="success-msg">{{message}}</span>
+
+			                    </div>
+			                {% endif %}
+
+        			    {% endfor %}
+			 	  </div>	
+			    </form>
+			  </div>
+
+			  <!-- REGISTER PANEL -->
+			  <div class="tab-pane fade" id="register-panel" role="tabpanel" aria-labelledby="profile-tab">
+
+			   	<form method="POST" action="">
+					{% csrf_token %}
+				   	<div class="modal-body mx-3">
+				        <div class="md-form mb-5">
+				          <i class="fas fa-user prefix text-white"></i>
+				          {{register_form.username}}
+				          <label class="text-white" data-error="wrong" data-success="right" for="reg-username" id="username-label">Create username</label>
+				        </div>
+				        <div class="md-form mb-5">
+				          <i class="fas fa-envelope prefix text-white"></i>
+				          {{register_form.email}}
+				          <label class="text-white" data-error="wrong" data-success="right" for="reg-email">Enter email</label>
+				        </div>
+
+				        <div class="md-form mb-5">
+				          <i class="fas fa-lock prefix text-white"></i>
+				          {{register_form.password1}}
+				          <label class="text-white" data-error="wrong" data-success="right" for="reg-password1">Create password</label>
+				        </div>
+
+				        <div class="md-form mb-5">
+				          <i class="fas fa-lock prefix text-white"></i>
+				          {{register_form.password2}}
+				          <label class="text-white" data-error="wrong" data-success="right" for="reg-password2">Repeat password</label>
+				        </div>
+
+				    </div>
+				    <div class="modal-footer d-flex justify-content-center">
+				    	<button name="register_submit" class="btn btn-outline-white rounded-pill w-50 modal-submit-btn">Register</button>
+
+				    	{% for message in messages %}
+			    	    	{% if message.tags == "info" %}
+
+			                    <div class="alert alert-danger alert-dismissible fade show mt-5 mb-2">
+			                        <a class="close" href="#" data-dismiss="alert">×</a>
+
+			                        <span id="reg-error">{{message}}</span>
+
+			                    </div>
+
+			                {% endif %}
+
+        			    {% endfor %}
+
+				    </div>
+				</form>
+			  </div>
+		</div>
+	  </div>
+	</div>
+ </div>
+
+</div>
+
+
+{% endblock content %}
+
+{% block scripts %}
+ <script type="text/javascript">
+
+ 	jQuery(document).ready(function(e) {
+   		$('input[name="username"]').blur();
+
+
+   		if (document.getElementById("error-msg") !== null || document.getElementById("success-msg") !== null){
+
+   			var loginBtn = document.getElementById("loginBtn");
+
+   			loginBtn.click();
+
+   		}else if (document.getElementById("reg-error") !== null) {
+
+   			var regBtn = document.getElementById("registerBtn");
+
+   			regBtn.click();
+   		}
+
+	});
+
+ 	var loginBtn = document.getElementById("loginBtn");
+ 	var loginPanel = document.getElementById("login-panel");
+ 	var loginTab = document.getElementById("login-tab");
+ 	var registerBtn = document.getElementById("registerBtn");
+ 	var registerPanel = document.getElementById("register-panel");
+ 	var registerTab = document.getElementById("register-tab");
+
+ 	loginBtn.onclick = function(){
+ 		if (registerPanel.classList.contains("show") && registerPanel.classList.contains("active") && registerTab.classList.contains("active"))
+ 		{
+ 			registerTab.classList.remove("active")
+ 			registerPanel.classList.remove("show");
+			registerPanel.classList.remove("active");
+ 		}
+ 		addClass(loginPanel, loginTab);
+  		$('#modalLoginForm').modal('show');
+	}
+
+	registerBtn.onclick = function(){
+		if (loginPanel.classList.contains("show") && loginPanel.classList.contains("active") && loginTab.classList.contains("active"))
+		{
+			loginTab.classList.remove("active");
+			loginPanel.classList.remove("show");
+			loginPanel.classList.remove("active");
+		}
+
+  		addClass(registerPanel, registerTab);
+  		$('#modalLoginForm').modal('show');
+	}
+
+	function addClass(panel, tab) {
+		tab.classList.add("active")
+		panel.classList.add("active");
+		panel.classList.add("show");
+    }
+
+ </script>
+
+{% endblock scripts %}

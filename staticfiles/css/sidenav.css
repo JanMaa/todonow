@@ -1,0 +1,217 @@
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 0;
+}
+
+.sidenav .nav_item, .closebtn {
+  text-decoration: none;
+  font-size: 20px;
+  color: #1c2331;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidenav .nav_item:hover {
+  background-color: #b2dfdb;
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: -10px;
+  right: 10px;
+  font-size: 36px;
+  color: #b0bec5;
+}
+
+.sidenav .closebtn:hover {
+  color: #f1f1f1;
+}
+
+#body_container {
+  transition: margin-left .5s;
+}
+
+#inner {
+  transition: margin-left .5s;
+}
+
+#userbtn {
+  transition: visibility .5s;
+}
+
+/*profile*/
+
+#card_header {
+    min-height: calc(145px + (160 - 145) * ((100vw - 320px) / (1600 - 320))) !important;
+    background: #00695c;
+}
+
+#profile_card {
+    background: #e0f2f1;
+}
+
+#sideNavAvatar {
+    position: relative;
+    top: calc(-60px + (60 - 90) * ((100vw - 320px) / (1600 - 320))) !important;
+    border: 5px solid #e0f2f1;
+    /* make a square container */
+    width: calc(100px + (179 - 130) * ((100vw - 320px) / (1600 - 320))) !important;
+    height: calc(100px + (179 - 130) * ((100vw - 320px) / (1600 - 320))) !important;
+
+    /* fill the container, preserving aspect ratio, and cropping to fit */
+    background-size: cover;
+
+    /* center the image vertically and horizontally */
+    background-position: top center;
+
+    /* round the edges to a circle with border radius 1/2 container size */
+    border-radius: 50%;
+}
+
+#sideNavAvatarDefault {
+  position: relative;
+  top: calc(-55px + (60 - 90) * ((100vw - 320px) / (1600 - 320))) !important;
+  border: 5px solid #e0f2f1;
+  /* make a square container */
+  width: calc(90px + (179 - 130) * ((100vw - 320px) / (1600 - 320))) !important;
+  height: calc(90px + (179 - 130) * ((100vw - 320px) / (1600 - 320))) !important;
+
+  border: 5px solid #e0f2f1;
+  border-radius: 50%;
+  background: #00695c;
+  font-size: 80px;
+  color: #e0f2f1;
+}
+
+#main-list-group {
+    position: relative;
+    top: calc(-70px + (50 - 60) * ((100vw - 320px) / (1600 - 320))) !important;
+}
+
+.list-group-item{
+  color: #004d40;
+}
+
+.list-group-flush a:hover {
+  color: #004d40;
+  font-weight: bold;
+}
+
+/*IMAGE UPLOAD*/
+
+.inputfile {
+    width: 0.1px !important;
+    height: 0.1px !important;
+    opacity: 0 !important;
+    overflow: hidden !important;
+    position: absolute !important;
+    z-index: -1 !important;
+}
+
+.inputfile + label {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.inputfile-3:focus + label,
+.inputfile-3.has-focus + label,
+.inputfile-3 + label:hover {
+    color: #004d40;
+    font-weight: bold;
+}
+
+#uploadBtn {
+  background-color: #00695c !important;
+  color: white;
+}
+
+#uploadBtn:hover {
+  background-color: #004d40 !important;
+}
+/*IMAGE UPLOAD*/
+
+
+@media (max-width: 768px) {
+
+  #sideNavAvatarDefault{
+    width: calc(150px + (179 - 130) * ((100vw - 320px) / (1600 - 320))) !important;
+    height: calc(150px + (179 - 130) * ((100vw - 320px) / (1600 - 320))) !important;
+    border-radius: 50%;
+    top: calc(-90px + (60 - 90) * ((100vw - 320px) / (1600 - 320))) !important;
+  }
+
+  #sideNavAvatar{
+    width: calc(150px + (179 - 130) * ((100vw - 320px) / (1600 - 320))) !important;
+    height: calc(150px + (179 - 130) * ((100vw - 320px) / (1600 - 320))) !important;
+    border-radius: 50%;
+    top: calc(-90px + (60 - 90) * ((100vw - 320px) / (1600 - 320))) !important;
+  }
+
+  #main-list-group {
+    position: relative;
+    top: calc(-95px + (50 - 60) * ((100vw - 320px) / (1600 - 320))) !important;
+  }
+}
+
+@media screen and (max-width: 991px) and (min-width: 769px){
+
+  #card_create {
+    width: 100%;
+    max-width: 100%;
+    max-width: 100vw;
+    box-shadow: none !important;
+    background-color: #FAFAFA !important;
+  }
+
+  #sideNavAvatarDefault{
+    width: calc(120px + (179 - 130) * ((100vw - 320px) / (1600 - 320))) !important;
+    height: calc(120px + (179 - 130) * ((100vw - 320px) / (1600 - 320))) !important;
+    border-radius: 50%;
+    top: calc(-90px + (60 - 90) * ((100vw - 320px) / (1600 - 320))) !important;
+  }
+
+  #sideNavAvatar{
+    width: calc(120px + (179 - 130) * ((100vw - 320px) / (1600 - 320))) !important;
+    height: calc(120px + (179 - 130) * ((100vw - 320px) / (1600 - 320))) !important;
+    border-radius: 50%;
+    top: calc(-75px + (60 - 90) * ((100vw - 320px) / (1600 - 320))) !important;
+  }
+
+
+}
+
+@media screen and (max-height: 450px) {
+  .list-group-flush {
+    font-size: 14px;
+  }
+
+  #sideNavAvatarDefault {
+    width: calc(100px + (179 - 130) * ((100vw - 320px) / (1600 - 320))) !important;
+    border-radius: 50%;
+    top: calc(-70px + (60 - 90) * ((100vw - 320px) / (1600 - 320))) !important;
+  }
+
+  #card_header {
+    min-height: calc(80px + (160 - 145) * ((100vw - 320px) / (1600 - 320))) !important;
+    background: #00695c;
+  }
+
+  #main-list-group {
+    position: relative;
+    top: calc(-70px + (50 - 60) * ((100vw - 320px) / (1600 - 320))) !important;
+  }
+
+  .sidenav {
+    height: 100%;
+  }
+
+}
